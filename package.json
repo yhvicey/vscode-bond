@@ -1,8 +1,8 @@
 {
     "name": "vscode-bond",
-    "displayName": "vscode-bond",
+    "displayName": "Bond",
     "description": "Providing syntax highlighting for bond files.",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "publisher": "vicey",
     "scripts": {
         "package": "vsce package"
@@ -13,6 +13,7 @@
     "categories": [
         "Languages"
     ],
+    "icon": "images/icon.png",
     "license": "WTFPL",
     "keywords": [
         "bond"
