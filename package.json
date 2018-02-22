@@ -1,0 +1,49 @@
+{
+    "name": "vscode-bond",
+    "displayName": "vscode-bond",
+    "description": "Providing syntax highlighting for bond files.",
+    "version": "0.0.1",
+    "publisher": "vicey",
+    "scripts": {
+        "package": "vsce package"
+    },
+    "engines": {
+        "vscode": "^1.0.0"
+    },
+    "categories": [
+        "Languages"
+    ],
+    "license": "WTFPL",
+    "keywords": [
+        "bond"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/yhvicey/vscode-bond"
+    },
+    "contributes": {
+        "languages": [
+            {
+                "id": "bond",
+                "aliases": [
+                    "Bond",
+                    "bond"
+                ],
+                "extensions": [
+                    ".bond"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "bond",
+                "scopeName": "source.bond",
+                "path": "./syntaxes/bond.tmLanguage.json"
+            }
+        ]
+    },
+    "devDependencies": {
+        "vsce": "^1.36.3"
+    }
+}

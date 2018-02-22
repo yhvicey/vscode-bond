@@ -1,0 +1,114 @@
+{
+	"$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+	"name": "Bond",
+	"patterns": [{
+		"include": "#comments"
+	}, {
+		"include": "#declaration"
+	}, {
+		"include": "#keywords"
+	}, {
+		"include": "#fields"
+	}, {
+		"include": "#strings"
+	}],
+	"repository": {
+		"comments": {
+			"patterns": [{
+				"name": "comment.block.bond",
+				"begin": "/\\*",
+				"end": "\\*/"
+			}, {
+				"name": "comment.line.double-dash.bond",
+				"begin": "//",
+				"end": "$"
+			}]
+		},
+		"declaration": {
+			"patterns": [{
+				"match": "\\s*(struct|enum)\\s*(\\S+)\\s*",
+				"captures": {
+					"1": {
+						"patterns": [{
+							"include": "#keywords"
+						}]
+					},
+					"2": {
+						"patterns": [{
+							"include": "#types"
+						}]
+					}
+				}
+			}]
+		},
+		"fields": {
+			"patterns": [{
+				"match": "([0-9]*)\\s*(:)\\s*(optional)?\\s+(\\S+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
+				"captures": {
+					"1": {
+						"name": "constant.numeric.bond"
+					},
+					"3": {
+						"patterns": [{
+							"include": "#keywords"
+						}]
+					},
+					"4": {
+						"patterns": [{
+							"include": "#types"
+						}]
+					},
+					"8": {
+						"patterns": [{
+							"include": "#keywords"
+						}]
+					}
+				}
+			}, {
+				"match": "(\\S+)(\\s*(=)\\s*((-)?([0-9]*)))(,)?",
+				"captures": {
+					"6": {
+						"name": "constant.numeric"
+					}
+				}
+			}]
+		},
+		"keywords": {
+			"patterns": [{
+				"name": "keyword.bond",
+				"match": "\\b(enum|import|namespace|nothing|optional|struct)\\b"
+			}]
+		},
+		"strings": {
+			"patterns": [{
+				"name": "string.quoted.double.bond",
+				"begin": "\"",
+				"end": "\"",
+				"patterns": [{
+					"name": "constant.character.escape.bond",
+					"match": "\\\\."
+				}]
+			}, {
+				"name": "string.quoted.double.bond",
+				"begin": "@\"",
+				"end": "\""
+			}]
+		},
+		"types": {
+			"patterns": [{
+				"match": "([^<>\\s]*)(<(.*)>)?(\\[[0-9]*\\])?",
+				"captures": {
+					"1": {
+						"name": "entity.name.type.bond"
+					},
+					"3": {
+						"patterns": [{
+							"include": "#types"
+						}]
+					}
+				}
+			}]
+		}
+	},
+	"scopeName": "source.bond"
+}
