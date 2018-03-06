@@ -43,7 +43,7 @@
 		},
 		"fields": {
 			"patterns": [{
-				"match": "([0-9]*)\\s*(:)\\s*(optional)?\\s+(\\S+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
+				"match": "([0-9]*)\\s*(:)\\s*(optional|required)?\\s+(\\S+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
 				"captures": {
 					"1": {
 						"name": "constant.numeric.bond"
@@ -76,7 +76,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.bond",
-				"match": "\\b(enum|import|namespace|nothing|optional|struct)\\b"
+				"match": "\\b(enum|import|namespace|nothing|optional|required|struct)\\b"
 			}]
 		},
 		"strings": {
