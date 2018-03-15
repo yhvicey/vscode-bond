@@ -96,7 +96,7 @@
 		},
 		"types": {
 			"patterns": [{
-				"match": "[^<>,\\[\\]]",
+				"match": "[^<>,\\[\\]\\?\\.]",
 				"name": "entity.name.type.bond"
 			}]
 		}
