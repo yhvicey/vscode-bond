@@ -43,7 +43,7 @@
 		},
 		"fields": {
 			"patterns": [{
-				"match": "([0-9]*)\\s*(:)\\s*(optional|required)?\\s+(\\S+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
+				"match": "([0-9]*)\\s*(:)\\s*(optional|required)?\\s+([^=]+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
 				"captures": {
 					"1": {
 						"name": "constant.numeric.bond"
@@ -96,17 +96,8 @@
 		},
 		"types": {
 			"patterns": [{
-				"match": "([^<>\\s]*)(<(.*)>)?(\\[[0-9]*\\])?",
-				"captures": {
-					"1": {
-						"name": "entity.name.type.bond"
-					},
-					"3": {
-						"patterns": [{
-							"include": "#types"
-						}]
-					}
-				}
+				"match": "[^<>,\\[\\]]",
+				"name": "entity.name.type.bond"
 			}]
 		}
 	},

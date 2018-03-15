@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.4
+
+- Adjust type syntax highlighting
+
 ## 0.0.3
 
 - Add **required** keyword
