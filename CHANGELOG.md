@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.6
+
+- Adjust extension description
+
 ## 0.0.5
 
 - Adjust type syntax highlighting again

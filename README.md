@@ -1,3 +1,3 @@
 # Bond
 
-Providing syntax highlighting for bond files.
+Providing syntax highlighting for Microsoft's Bond language's files.
