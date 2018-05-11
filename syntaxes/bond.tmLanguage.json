@@ -96,6 +96,9 @@
 		},
 		"types": {
 			"patterns": [{
+				"match": "\\b(bool|byte|char|decimal|double|float|int|int16|int32|int64|long|object|sbyte|short|string|uint|uint16|uint32|uint64|ulong|ushort|wstring)(\\?)?\\b",
+				"name": "keyword.bond"
+			}, {
 				"match": "[^<>,\\[\\]\\?\\.]",
 				"name": "entity.name.type.bond"
 			}]
