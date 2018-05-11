@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.7
+
+- Added true/false/null keywords
+- Add different color for primitive types
+
 ## 0.0.6
 
 - Adjust extension description
