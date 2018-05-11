@@ -76,7 +76,7 @@
 		"keywords": {
 			"patterns": [{
 				"name": "keyword.bond",
-				"match": "\\b(enum|import|namespace|nothing|optional|required|struct)\\b"
+				"match": "\\b(enum|false|import|namespace|nothing|null|optional|required|struct|true)\\b"
 			}]
 		},
 		"strings": {
