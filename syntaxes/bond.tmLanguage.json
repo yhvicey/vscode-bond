@@ -6,6 +6,8 @@
 	}, {
 		"include": "#declaration"
 	}, {
+		"include": "#decorators"
+	}, {
 		"include": "#keywords"
 	}, {
 		"include": "#fields"
@@ -34,6 +36,18 @@
 						}]
 					},
 					"2": {
+						"patterns": [{
+							"include": "#types"
+						}]
+					}
+				}
+			}]
+		},
+		"decorators": {
+			"patterns": [{
+				"match": "\\[([^(\\]]+)",
+				"captures": {
+					"1": {
 						"patterns": [{
 							"include": "#types"
 						}]
