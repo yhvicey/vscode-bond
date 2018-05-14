@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.0.8
+
+- Add list<> and nullable<>
+- Add highlight for decorators
+- Update README.md for theme customization
+
 ## 0.0.7
 
 - Added true/false/null keywords
