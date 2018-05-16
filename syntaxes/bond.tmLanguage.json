@@ -110,7 +110,7 @@
 		},
 		"types": {
 			"patterns": [{
-				"match": "\\b(bool|byte|char|decimal|double|float|int|int16|int32|int64|list|long|nullable|object|sbyte|short|string|uint|uint16|uint32|uint64|ulong|ushort|wstring)(\\?)?\\b",
+				"match": "\\b(bool|byte|char|decimal|double|float|int|int8|int16|int32|int64|list|long|nullable|object|sbyte|short|string|uint|uint8|uint16|uint32|uint64|ulong|ushort|vector|wstring)(\\?)?\\b",
 				"name": "keyword.bond"
 			}, {
 				"match": "[^<>,\\[\\]\\?\\.]",
