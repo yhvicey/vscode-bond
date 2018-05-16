@@ -57,7 +57,7 @@
 		},
 		"fields": {
 			"patterns": [{
-				"match": "([0-9]*)\\s*(:)\\s*(optional|required)?\\s+([^=]+)\\s+([^\\s=]+)(\\s*(=)\\s*(\\S+)\\s*)?(;)?",
+				"match": "([0-9]+)\\s*:\\s*((optional|required)\\s+)?([^=]+)\\s([a-zA-Z_0-9]+)\\s*(=\\s*(\\S+)\\s*)?;",
 				"captures": {
 					"1": {
 						"name": "constant.numeric.bond"
@@ -72,7 +72,7 @@
 							"include": "#types"
 						}]
 					},
-					"8": {
+					"7": {
 						"patterns": [{
 							"include": "#keywords"
 						}]
