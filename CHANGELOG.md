@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.0.9
+
+- Adjust field match pattern
+- Add int8/uint8/vector
+
 ## 0.0.8
 
 - Add list<> and nullable<>
