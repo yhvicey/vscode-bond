@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.0.10
+
+- Fix publisher issue
+
 ## 0.0.9
 
 - Adjust field match pattern
