@@ -1,0 +1,25 @@
+{
+    "compilerOptions": {
+        "target": "es2018",
+        "module": "commonjs",
+        "strict": true,
+        "declaration": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "baseUrl": ".",
+        "lib": [
+            "esnext"
+        ],
+        "plugins": [{
+            "name": "typescript-tslint-plugin"
+        }],
+        "outDir": "out"
+    },
+    "include": [
+        "src/**/*.ts",
+        "test/**/*.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

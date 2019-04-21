@@ -1,2 +1,4 @@
-node_modules
-*.vsix
+# Folders
+bond-test/
+node_modules/
+out/

@@ -24,24 +24,30 @@
         "url": "https://github.com/yhvicey/vscode-bond"
     },
     "contributes": {
-        "languages": [{
-            "id": "bond",
-            "aliases": [
-                "Bond",
-                "bond"
-            ],
-            "extensions": [
-                ".bond"
-            ],
-            "configuration": "./language-configuration.json"
-        }],
-        "grammars": [{
-            "language": "bond",
-            "scopeName": "source.bond",
-            "path": "./syntaxes/bond.tmLanguage.json"
-        }]
+        "languages": [
+            {
+                "id": "bond",
+                "aliases": [
+                    "Bond",
+                    "bond"
+                ],
+                "extensions": [
+                    ".bond"
+                ],
+                "configuration": "./language-configuration.json"
+            }
+        ],
+        "grammars": [
+            {
+                "language": "bond",
+                "scopeName": "source.bond",
+                "path": "./syntaxes/bond.tmLanguage.json"
+            }
+        ]
     },
     "devDependencies": {
+        "tslint": "^5.16.0",
+        "typescript": "^3.4.4",
         "vsce": "^1.36.3"
     }
 }

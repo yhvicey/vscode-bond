@@ -1,0 +1,19 @@
+{
+    "name": "bond-parser",
+    "version": "1.0.0",
+    "description": "Syntax parser for bond files",
+    "repository": "https://github.com/yhvicey/vscode-bond",
+    "author": "yiwwan",
+    "license": "0BSD",
+    "main": "out/src/index.js",
+    "typings": "out/src/index.d.ts",
+    "scripts": {
+        "watch": "tsc -p ./tsconfig.json --watch",
+        "build": "tsc -p ./tsconfig.json"
+    },
+    "devDependencies": {
+        "@types/node": "^11.13.6",
+        "tslint": "^5.16.0",
+        "typescript": "^3.4.4"
+    }
+}

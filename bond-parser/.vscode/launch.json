@@ -1,0 +1,14 @@
+{
+    "version": "0.2.0",
+    "configurations": [{
+        "type": "node",
+        "request": "launch",
+        "name": "Generate Tokens",
+        "program": "${workspaceFolder}\\out\\E2E\\GenerateTokens.js",
+        "preLaunchTask": "npm: build",
+        "sourceMaps": true,
+        "outFiles": [
+            "${workspaceFolder}/out/**/*.js"
+        ]
+    }]
+}
