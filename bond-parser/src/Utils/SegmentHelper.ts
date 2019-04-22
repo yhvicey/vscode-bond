@@ -101,7 +101,7 @@ export default class SegmentHelper {
     }
 
     public static isStringLiteralStart(segment: string) {
-        return segment.startsWith("\"");
+        return this.stringLiteralStartRegex.test(segment);
     }
 
     public static isValue(segment: string) {
@@ -144,6 +144,7 @@ export default class SegmentHelper {
     private static readonly identifierRegex = /^\w+$/;
     private static readonly keywordRegex = /^(enum|import|namespace|optional|required|struct)$/;
     private static readonly numberRegex = /^(?<!\.)(-)?(\d+)((\.(\d+))|(l|L))?(?!\.)$/;
+    private static readonly stringLiteralStartRegex = /(L)?"/;
     private static readonly valueRegex = /^(false|nothing|null|true)$/;
-    private static readonly whitespaceRegex = /^( |\t)+$/;
+    private static readonly whitespaceRegex = /^( |\t|\u00a0)+$/;
 }

@@ -2,3 +2,6 @@
 bond-test/
 node_modules/
 out/
+
+# Files
+*.vsix

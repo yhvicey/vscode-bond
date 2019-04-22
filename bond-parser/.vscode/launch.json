@@ -4,7 +4,7 @@
         "type": "node",
         "request": "launch",
         "name": "Generate Tokens",
-        "program": "${workspaceFolder}\\out\\E2E\\GenerateTokens.js",
+        "program": "${workspaceFolder}\\out\\test\\E2E\\GenerateTokens.js",
         "preLaunchTask": "npm: build",
         "sourceMaps": true,
         "outFiles": [

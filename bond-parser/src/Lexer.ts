@@ -156,16 +156,20 @@ export default class Lexer {
                     }
                 }
             } else if (SegmentHelper.isStringLiteralStart(segment)) {
-                while (true) {
-                    const nextQuoteIndex = this.reader.nextIndexOf(char => char === "\"");
-                    if (!this.reader.advanceTo(nextQuoteIndex)) {
-                        // Can't find end of the string literal, return all of them
-                        token = new StringToken(this.reader.start, this.reader.segment);
-                        break;
-                    } else if (this.reader.prev !== "\\") {
-                        this.reader.advance();
-                        token = new StringToken(this.reader.start, this.reader.segment);
-                        break;
+                if (segment.length > 1 && !segment.endsWith("\\\"") && segment.endsWith("\"")) {
+                    token = new StringToken(this.reader.start, segment);
+                } else {
+                    while (true) {
+                        const nextQuoteIndex = this.reader.nextIndexOf(char => char === "\"");
+                        if (!this.reader.advanceTo(nextQuoteIndex)) {
+                            // Can't find end of the string literal, return all of them
+                            token = new StringToken(this.reader.start, this.reader.segment);
+                            break;
+                        } else if (this.reader.prev !== "\\") {
+                            this.reader.advance();
+                            token = new StringToken(this.reader.start, this.reader.segment);
+                            break;
+                        }
                     }
                 }
             } else if (SegmentHelper.isIdentifier(segment)) {

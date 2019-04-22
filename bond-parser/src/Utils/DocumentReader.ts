@@ -56,8 +56,9 @@ export default class DocumentReader {
         switch (this.current) {
             // Return whitespace segment
             case " ":
-            case "\t": {
-                const index = this.nextIndexOf(char => char !== " " && char !== "\t");
+            case "\t":
+            case "\u00a0": {
+                const index = this.nextIndexOf(char => char !== " " && char !== "\t" && char !== "\u00a0");
                 return this.advanceTo(index);
             }
             // Return newline segment
@@ -102,6 +103,7 @@ export default class DocumentReader {
     private isSegmentStop(char: string) {
         return char === " "
             || char === "\t"
+            || char === "\u00a0"
             || char === "\r"
             || char === "\n"
             || this.isUserDefinedSegmentStop(char);

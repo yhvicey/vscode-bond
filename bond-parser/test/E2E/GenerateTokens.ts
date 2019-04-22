@@ -7,8 +7,12 @@ import Lexer from "../../src/Lexer";
 import { TokenType } from "../../src/Lexical";
 
 const samples = readdirSync(Props.sampleRoot);
+const process = /.*/;
 
 samples.forEach(sample => {
+    if (!process.test(sample)) {
+        return;
+    }
     const document = readFileSync(resolve(Props.sampleRoot, sample)).toString().replace(/^\uFEFF/, "");
     const lexer = new Lexer(document);
     const tokens = lexer.process();
