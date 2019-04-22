@@ -126,6 +126,7 @@ export default class SegmentHelper {
         "int64",
         "list",
         "long",
+        "map",
         "nullable",
         "object",
         "sbyte",

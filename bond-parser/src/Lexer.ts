@@ -35,7 +35,8 @@ import {
     UnknownToken,
     WhitespaceToken,
 } from "./Lexical";
-import { DocumentReader, SegmentHelper } from "./Utils";
+import { SegmentHelper } from "./Utils";
+import { DocumentReader } from "./Document";;
 
 export default class Lexer {
     private readonly reader: DocumentReader;

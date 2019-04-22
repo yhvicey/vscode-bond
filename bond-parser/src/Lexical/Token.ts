@@ -1,4 +1,4 @@
-import TextSpan from "./TextSpan";
+import TextSpan from "../Document/TextSpan";
 
 export enum TokenType {
     UnknownToken,

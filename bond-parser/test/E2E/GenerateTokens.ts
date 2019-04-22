@@ -7,10 +7,13 @@ import Lexer from "../../src/Lexer";
 import { TokenType } from "../../src/Lexical";
 
 const samples = readdirSync(Props.sampleRoot);
-const process = /.*/;
+
+// Options
+const filter = /.*/;
+const outputTriviaToken = false;
 
 samples.forEach(sample => {
-    if (!process.test(sample)) {
+    if (!filter.test(sample)) {
         return;
     }
     const document = readFileSync(resolve(Props.sampleRoot, sample)).toString().replace(/^\uFEFF/, "");
@@ -18,6 +21,12 @@ samples.forEach(sample => {
     const tokens = lexer.process();
     const tokensText = tokens
         .map(token => {
+            if (!outputTriviaToken
+                && (token.type === TokenType.WhitespaceToken
+                    || token.type === TokenType.SingleLineCommentToken
+                    || token.type === TokenType.MultiLineCommentToken)) {
+                return;
+            }
             let line = TokenType[token.type];
             line = line + "\t" + token.toString();
             line = line + "\t" + token
@@ -26,8 +35,11 @@ samples.forEach(sample => {
                 .replace(/\r/g, "\\r")
                 .replace(/\t/g, "\\t");
             return line;
-        });
+        })
+        .filter(text => typeof text === "string") as string[];
     writeFileSync(
         resolve(Props.tokensRoot, `${sample}.tsv`),
-        ["TokenType\tSpan\tRaw"].concat(tokensText).join("\n"));
+        ["TokenType\tSpan\tRaw"]
+            .concat(tokensText)
+            .join("\n"));
 });
