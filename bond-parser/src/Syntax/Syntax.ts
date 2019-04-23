@@ -1,7 +1,8 @@
 import { Token } from "../Lexical";
-import { TextSpan } from "../Document";
+import TextSpan from "../TextSpan";
 
 export enum SyntaxType {
+    UnknownSyntax,
     // Non-top level syntaxes
 
     // Top level syntaxes
@@ -14,12 +15,14 @@ export default abstract class Syntax extends TextSpan {
     protected syntaxes?: Syntax[];
 
     public constructor(type: SyntaxType, tokens?: Token[], syntaxes?: Syntax[]) {
-        if (tokens !== undefined) {
-            // No op
-        } else if (syntaxes !== undefined) {
-            tokens = syntaxes.flatMap(syntax => syntax.tokens);
-        } else {
+        if (tokens !== undefined && syntaxes !== undefined) {
+            throw new Error("Only one of tokens or syntaxes can be provided.");
+        } else if (tokens === undefined && syntaxes === undefined) {
             throw new Error("One of tokens or syntaxes must be provided.");
+        }
+
+        if (tokens === undefined) {
+            tokens = syntaxes!.flatMap(syntax => syntax.tokens);
         }
 
         const spanStart = tokens[0].start;

@@ -12,9 +12,9 @@ const samples = readdirSync(Props.sampleRoot);
 const filter = /.*/;
 const outputTriviaToken = false;
 
-samples.forEach(sample => {
+for (const sample of samples) {
     if (!filter.test(sample)) {
-        return;
+        continue;
     }
     const document = readFileSync(resolve(Props.sampleRoot, sample)).toString().replace(/^\uFEFF/, "");
     const lexer = new Lexer(document);
@@ -24,7 +24,8 @@ samples.forEach(sample => {
             if (!outputTriviaToken
                 && (token.type === TokenType.WhitespaceToken
                     || token.type === TokenType.SingleLineCommentToken
-                    || token.type === TokenType.MultiLineCommentToken)) {
+                    || token.type === TokenType.MultiLineCommentToken
+                    || token.type === TokenType.EndOfLineToken)) {
                 return;
             }
             let line = TokenType[token.type];
@@ -42,4 +43,4 @@ samples.forEach(sample => {
         ["TokenType\tSpan\tRaw"]
             .concat(tokensText)
             .join("\n"));
-});
+}

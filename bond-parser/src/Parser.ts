@@ -4,6 +4,9 @@ import Syntax from "./Syntax/Syntax";
 export default class Parser {
     private readonly tokens: Token[];
 
+    private readonly tokenQueue: Token[] = [];
+    private readonly syntaxQueue: Syntax[] = [];
+
     public constructor(tokens: Token[]) {
         this.tokens = tokens;
     }
