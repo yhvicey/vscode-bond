@@ -1,6 +1,6 @@
 import ArrayHelper from "./ArrayHelper";
 
-export default class DocumentHelper extends ArrayHelper<string, string> {
+export default class DocumentHelper extends ArrayHelper<string, string, string> {
     protected get length() {
         return this.document.length;
     }
@@ -22,8 +22,8 @@ export default class DocumentHelper extends ArrayHelper<string, string> {
         super(segmentStop);
         this.document = document;
     }
-    protected areSame(left: string, right: string): boolean {
-        return left === right;
+    protected getSegmentStop(el: string): string {
+        return el;
     }
 
     protected get(index: number) {

@@ -1,4 +1,4 @@
-export default abstract class ArrayHelper<TElement, TSegment> {
+export default abstract class ArrayHelper<TElement, TSegment, TSegmentStop> {
     public get current() {
         return this.get(this.currentIndex);
     }
@@ -29,13 +29,13 @@ export default abstract class ArrayHelper<TElement, TSegment> {
 
     protected abstract get length(): number;
 
-    protected abstract defaultSegmentStopGroups: TElement[][];
+    protected abstract defaultSegmentStopGroups: TSegmentStop[][];
 
     private currentIndex: number = 0;
     private currentCommittedIndex: number = 0;
-    private userDefinedSegmentStop: TElement[];
+    private userDefinedSegmentStop: TSegmentStop[];
 
-    public constructor(userDefinedSegmentStop?: TElement[]) {
+    public constructor(userDefinedSegmentStop?: TSegmentStop[]) {
         this.userDefinedSegmentStop = userDefinedSegmentStop || [];
     }
 
@@ -57,9 +57,9 @@ export default abstract class ArrayHelper<TElement, TSegment> {
     public advanceToNextSegmentStart() {
         for (const defaultSegmentStops of this.defaultSegmentStopGroups) {
             // If current is one of the current default segment stop
-            if (this.inArray(this.current, defaultSegmentStops)) {
+            if (this.isSegmentStopElement(this.current, defaultSegmentStops)) {
                 // then advance to next non current group segment stop
-                const index = this.nextIndexOf(el => !this.inArray(el, defaultSegmentStops));
+                const index = this.nextIndexOf(el => !this.isSegmentStopElement(el, defaultSegmentStops));
                 return this.advanceTo(index);
             }
         }
@@ -93,9 +93,9 @@ export default abstract class ArrayHelper<TElement, TSegment> {
         this.currentIndex = this.currentCommittedIndex;
     }
 
-    protected abstract areSame(left: TElement, right: TElement): boolean;
-
     protected abstract get(index: number): TElement;
+
+    protected abstract getSegmentStop(el: TElement): TSegmentStop;
 
     protected abstract slice(start: number, end: number): TSegment;
 
@@ -105,16 +105,16 @@ export default abstract class ArrayHelper<TElement, TSegment> {
     }
 
     protected isDefaultSegmentStop(el: TElement) {
-        return this.inArray(el, this.defaultSegmentStopGroups.flat());
+        return this.isSegmentStopElement(el, this.defaultSegmentStopGroups.flat());
     }
 
     protected isUserDefinedSegmentStop(el: TElement) {
-        return this.inArray(el, this.userDefinedSegmentStop);
+        return this.isSegmentStopElement(el, this.userDefinedSegmentStop);
     }
 
-    private inArray(el: TElement, array: TElement[]) {
+    private isSegmentStopElement(el: TElement, array: TSegmentStop[]) {
         for (const e of array) {
-            if (this.areSame(el, e)) {
+            if (this.getSegmentStop(el) === e) {
                 return true;
             }
         }

@@ -1,8 +1,8 @@
 import ArrayHelper from "./ArrayHelper";
-import { Token } from "src/Lexical";
+import { Token, TokenType } from "src/Lexical";
 import { Syntax } from "src/Syntax";
 
-export default class TokenHelper extends ArrayHelper<Token, Token[]> {
+export default class TokenHelper extends ArrayHelper<Token, Token[], TokenType> {
     protected get length() {
         return this.tokens.length;
     }
@@ -12,9 +12,13 @@ export default class TokenHelper extends ArrayHelper<Token, Token[]> {
         ]];
     }
     private readonly tokens: Token[];
-    public constructor(tokens: Token[], segmentStop: Token[]) {
+    public constructor(tokens: Token[], segmentStop: TokenType[]) {
         super(segmentStop);
         this.tokens = tokens;
+    }
+
+    protected getSegmentStop(el: Token): TokenType {
+        return el.type;
     }
     protected areSame(left: Token, right: Token): boolean {
         return left.type === right.type;
