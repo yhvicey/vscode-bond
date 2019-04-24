@@ -1,5 +1,5 @@
 export default abstract class ArrayHelper<TElement, TSegment, TSegmentStop> {
-    public get current() {
+    public get current(): TElement | undefined {
         return this.get(this.currentIndex);
     }
 
@@ -54,7 +54,10 @@ export default abstract class ArrayHelper<TElement, TSegment, TSegmentStop> {
         return true;
     }
 
-    public advanceToNextSegmentStart() {
+    public advanceToNextSegmentStart(): boolean {
+        if (this.current === undefined) {
+            return false;
+        }
         for (const defaultSegmentStops of this.defaultSegmentStopGroups) {
             // If current is one of the current default segment stop
             if (this.isSegmentStopElement(this.current, defaultSegmentStops)) {

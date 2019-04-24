@@ -1,9 +1,9 @@
-import SegmentHelper from "./SegmentHelper";
+import DocSegmentHelper from "./DocSegmentHelper";
 import DocumentHelper from "./DocumentHelper";
 import ArrayHelper from "./ArrayHelper";
 
 export {
     ArrayHelper,
     DocumentHelper,
-    SegmentHelper,
+    DocSegmentHelper as SegmentHelper,
 };

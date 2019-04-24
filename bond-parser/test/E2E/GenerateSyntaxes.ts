@@ -3,8 +3,8 @@ import { readdirSync, readFileSync, writeFileSync } from "fs";
 
 import Props from "../Props";
 
-import { Lexer } from "../../src";
-import { TokenType } from "../../src/Lexical";
+import { Lexer, Parser } from "../../src";
+import { SyntaxType } from "../../src/Syntax";
 
 const samples = readdirSync(Props.sampleRoot);
 
@@ -19,18 +19,13 @@ for (const sample of samples) {
     const document = readFileSync(resolve(Props.sampleRoot, sample)).toString().replace(/^\uFEFF/, "");
     const lexer = new Lexer(document);
     const tokens = lexer.process();
-    const tokensText = tokens
-        .map(token => {
-            if (!outputTriviaToken
-                && (token.type === TokenType.WhitespaceToken
-                    || token.type === TokenType.SingleLineCommentToken
-                    || token.type === TokenType.MultiLineCommentToken
-                    || token.type === TokenType.EndOfLineToken)) {
-                return;
-            }
-            let line = TokenType[token.type];
-            line = line + "\t" + token.toString();
-            line = line + "\t" + token
+    const parser = new Parser(tokens);
+    const syntaxes = parser.parse();
+    const syntaxesText = syntaxes
+        .map(syntax => {
+            let line = SyntaxType[syntax.type];
+            line = line + "\t" + syntax.toString();
+            line = line + "\t" + syntax
                 .toRaw(document)
                 .replace(/\n/g, "\\n")
                 .replace(/\r/g, "\\r")
@@ -39,8 +34,8 @@ for (const sample of samples) {
         })
         .filter(text => typeof text === "string") as string[];
     writeFileSync(
-        resolve(Props.tokensRoot, `${sample}.tsv`),
+        resolve(Props.syntaxesRoot, `${sample}.tsv`),
         ["TokenType\tSpan\tRaw"]
-            .concat(tokensText)
+            .concat(syntaxesText)
             .join("\n"));
 }

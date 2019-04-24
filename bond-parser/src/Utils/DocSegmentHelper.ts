@@ -15,7 +15,7 @@ import {
     SemicolonToken,
 } from "../Lexical";
 
-export default class SegmentHelper {
+export default class DocSegmentHelper {
     public static isBasicType(segment: string) {
         return this.basicTypes.indexOf(segment) !== -1;
     }

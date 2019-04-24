@@ -10,5 +10,15 @@
         "outFiles": [
             "${workspaceFolder}/out/**/*.js"
         ]
+    }, {
+        "type": "node",
+        "request": "launch",
+        "name": "Generate Syntaxes",
+        "program": "${workspaceFolder}\\out\\test\\E2E\\GenerateSyntaxes.js",
+        "preLaunchTask": "npm: build",
+        "sourceMaps": true,
+        "outFiles": [
+            "${workspaceFolder}/out/**/*.js"
+        ]
     }]
 }

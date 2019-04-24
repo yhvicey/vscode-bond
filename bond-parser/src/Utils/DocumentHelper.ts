@@ -22,6 +22,7 @@ export default class DocumentHelper extends ArrayHelper<string, string, string> 
         super(segmentStop);
         this.document = document;
     }
+
     protected getSegmentStop(el: string): string {
         return el;
     }
