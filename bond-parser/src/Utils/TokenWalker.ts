@@ -1,7 +1,7 @@
-import ArrayHelper from "./ArrayHelper";
+import ArrayWalker from "./ArrayWalker";
 import { Token, TokenType } from "../Lexical";
 
-export default class TokenHelper extends ArrayHelper<Token, Token[], TokenType> {
+export default class TokenWalker extends ArrayWalker<Token, Token[], TokenType> {
     protected get length() {
         return this.tokens.length;
     }
@@ -9,8 +9,6 @@ export default class TokenHelper extends ArrayHelper<Token, Token[], TokenType> 
     protected get defaultSegmentStopGroups() {
         return [[
             TokenType.EndOfLineToken,
-        ], [
-            TokenType.WhitespaceToken,
         ]];
     }
 

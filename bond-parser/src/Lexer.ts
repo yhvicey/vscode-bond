@@ -35,13 +35,13 @@ import {
     UnknownToken,
     WhitespaceToken,
 } from "./Lexical";
-import { SegmentHelper, DocumentHelper } from "./Utils";
+import { DocSegmentHelper, DocumentWalker } from "./Utils";
 
 export default class Lexer {
-    private readonly docHelper: DocumentHelper;
+    private readonly docHelper: DocumentWalker;
 
     public constructor(document: string) {
-        this.docHelper = new DocumentHelper(
+        this.docHelper = new DocumentWalker(
             document,
             [
                 ".", ",",
@@ -70,13 +70,13 @@ export default class Lexer {
             return token;
         } else {
             const segment = this.docHelper.segment;
-            if (SegmentHelper.isWhitespace(segment)) {
+            if (DocSegmentHelper.isWhitespace(segment)) {
                 token = new WhitespaceToken(this.docHelper.start, segment);
-            } else if (SegmentHelper.isBasicType(segment)) {
+            } else if (DocSegmentHelper.isBasicType(segment)) {
                 token = new BasicTypeKeywordToken(this.docHelper.start, segment);
-            } else if (SegmentHelper.isNumber(segment)) {
+            } else if (DocSegmentHelper.isNumber(segment)) {
                 token = new NumberToken(this.docHelper.start, segment);
-            } else if (SegmentHelper.isKeyword(segment)) {
+            } else if (DocSegmentHelper.isKeyword(segment)) {
                 switch (segment) {
                     case "enum":
                         token = new EnumKeywordToken(this.docHelper.start); break;
@@ -93,7 +93,7 @@ export default class Lexer {
                     default:
                         throw new Error("Invalid keyword " + segment);
                 }
-            } else if (SegmentHelper.isValue(segment)) {
+            } else if (DocSegmentHelper.isValue(segment)) {
                 switch (segment) {
                     case "false":
                         token = new BooleanToken(this.docHelper.start, segment); break;
@@ -106,43 +106,43 @@ export default class Lexer {
                     default:
                         throw new Error("Invalid value " + segment);
                 }
-            } else if (SegmentHelper.isBasicType(segment)) {
+            } else if (DocSegmentHelper.isBasicType(segment)) {
                 token = new BasicTypeKeywordToken(this.docHelper.start, segment);
-            } else if (SegmentHelper.isOpenBrace(segment)) {
+            } else if (DocSegmentHelper.isOpenBrace(segment)) {
                 token = new OpenBraceToken(this.docHelper.start);
-            } else if (SegmentHelper.isOpenBracket(segment)) {
+            } else if (DocSegmentHelper.isOpenBracket(segment)) {
                 token = new OpenBracketToken(this.docHelper.start);
-            } else if (SegmentHelper.isOpenParen(segment)) {
+            } else if (DocSegmentHelper.isOpenParen(segment)) {
                 token = new OpenParenToken(this.docHelper.start);
-            } else if (SegmentHelper.isCloseBrace(segment)) {
+            } else if (DocSegmentHelper.isCloseBrace(segment)) {
                 token = new CloseBraceToken(this.docHelper.start);
-            } else if (SegmentHelper.isCloseBracket(segment)) {
+            } else if (DocSegmentHelper.isCloseBracket(segment)) {
                 token = new CloseBracketToken(this.docHelper.start);
-            } else if (SegmentHelper.isCloseParen(segment)) {
+            } else if (DocSegmentHelper.isCloseParen(segment)) {
                 token = new CloseParenToken(this.docHelper.start);
-            } else if (SegmentHelper.isLessThan(segment)) {
+            } else if (DocSegmentHelper.isLessThan(segment)) {
                 token = new LessThanToken(this.docHelper.start);
-            } else if (SegmentHelper.isGreaterThan(segment)) {
+            } else if (DocSegmentHelper.isGreaterThan(segment)) {
                 token = new GreaterThanToken(this.docHelper.start);
-            } else if (SegmentHelper.isComma(segment)) {
+            } else if (DocSegmentHelper.isComma(segment)) {
                 token = new CommaToken(this.docHelper.start);
-            } else if (SegmentHelper.isColon(segment)) {
+            } else if (DocSegmentHelper.isColon(segment)) {
                 token = new ColonToken(this.docHelper.start);
-            } else if (SegmentHelper.isDot(segment)) {
+            } else if (DocSegmentHelper.isDot(segment)) {
                 token = new DotToken(this.docHelper.start);
-            } else if (SegmentHelper.isEquals(segment)) {
+            } else if (DocSegmentHelper.isEquals(segment)) {
                 token = new EqualsToken(this.docHelper.start);
-            } else if (SegmentHelper.isQuestion(segment)) {
+            } else if (DocSegmentHelper.isQuestion(segment)) {
                 token = new QuestionToken(this.docHelper.start);
-            } else if (SegmentHelper.isSemicolon(segment)) {
+            } else if (DocSegmentHelper.isSemicolon(segment)) {
                 token = new SemicolonToken(this.docHelper.start);
-            } else if (SegmentHelper.isEndOfLine(segment)) {
+            } else if (DocSegmentHelper.isEndOfLine(segment)) {
                 token = new EndOfLineToken(this.docHelper.start, segment);
-            } else if (SegmentHelper.isSingleLineCommentStart(segment)) {
+            } else if (DocSegmentHelper.isSingleLineCommentStart(segment)) {
                 const nextSegmentStart = this.docHelper.nextIndexOf(char => char === "\r" || char === "\n");
                 this.docHelper.advanceTo(nextSegmentStart);
                 token = new SingleLineCommentToken(this.docHelper.start, this.docHelper.segment);
-            } else if (SegmentHelper.isMultipleLineCommentStart(segment)) {
+            } else if (DocSegmentHelper.isMultipleLineCommentStart(segment)) {
                 while (true) {
                     const nextStartIndex = this.docHelper.nextIndexOf(char => char === "*");
                     if (!this.docHelper.advanceTo(nextStartIndex) || this.docHelper.next === "") {
@@ -155,7 +155,7 @@ export default class Lexer {
                         break;
                     }
                 }
-            } else if (SegmentHelper.isStringLiteralStart(segment)) {
+            } else if (DocSegmentHelper.isStringLiteralStart(segment)) {
                 if (segment.length > 1 && !segment.endsWith("\\\"") && segment.endsWith("\"")) {
                     token = new StringToken(this.docHelper.start, segment);
                 } else {
@@ -172,7 +172,7 @@ export default class Lexer {
                         }
                     }
                 }
-            } else if (SegmentHelper.isIdentifier(segment)) {
+            } else if (DocSegmentHelper.isIdentifier(segment)) {
                 token = new IdentifierToken(this.docHelper.start, this.docHelper.segment);
             } else {
                 token = new UnknownToken(this.docHelper.start, segment);

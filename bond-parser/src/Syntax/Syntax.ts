@@ -6,13 +6,19 @@ export enum SyntaxType {
     // Non-top level syntaxes
 
     // Top level syntaxes
+    ImportSyntax,
+    NamespaceSyntax,
 }
 
 export default abstract class Syntax extends TextSpan {
+
+    public get tokensCount() {
+        return this.tokens.length;
+    }
+    public syntaxes?: Syntax[];
     public type: SyntaxType;
 
     protected tokens: Token[];
-    protected syntaxes?: Syntax[];
 
     public constructor(type: SyntaxType, tokens?: Token[], syntaxes?: Syntax[]) {
         if (tokens !== undefined && syntaxes !== undefined) {

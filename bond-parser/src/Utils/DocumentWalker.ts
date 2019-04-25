@@ -1,6 +1,6 @@
-import ArrayHelper from "./ArrayHelper";
+import ArrayWalker from "./ArrayWalker";
 
-export default class DocumentHelper extends ArrayHelper<string, string, string> {
+export default class DocumentWalker extends ArrayWalker<string, string, string> {
     protected get length() {
         return this.document.length;
     }

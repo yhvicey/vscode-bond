@@ -1,9 +1,13 @@
 import DocSegmentHelper from "./DocSegmentHelper";
-import DocumentHelper from "./DocumentHelper";
-import ArrayHelper from "./ArrayHelper";
+import DocumentWalker from "./DocumentWalker";
+import ArrayWalker from "./ArrayWalker";
+import SyntaxHelper from "./SyntaxHelper";
 
 export {
-    ArrayHelper,
-    DocumentHelper,
-    DocSegmentHelper as SegmentHelper,
+    // Walkers
+    ArrayWalker,
+    DocumentWalker,
+    // Helpers
+    DocSegmentHelper,
+    SyntaxHelper,
 };

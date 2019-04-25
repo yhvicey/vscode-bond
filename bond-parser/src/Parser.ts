@@ -1,14 +1,16 @@
 import { Token, TokenType } from "./Lexical";
-import TokenHelper from "./Utils/TokenHelper";
+import TokenWalker from "./Utils/TokenWalker";
 import {
     Syntax,
-    UnknownSyntax
+    UnknownSyntax,
+    ImportSyntax,
+    NamespaceSyntax
 } from "./Syntax";
+import { SyntaxHelper } from "./Utils";
 
 export default class Parser {
-    private readonly tokensHelper: TokenHelper;
-    private readonly tokenQueue: Token[] = [];
-    private readonly syntaxQueue: Syntax[] = [];
+    private readonly tokensHelper: TokenWalker;
+    private readonly finalizedSyntaxes: Syntax[] = [];
     private readonly triviaTokenTypes: TokenType[] = [
         TokenType.WhitespaceToken,
         TokenType.SingleLineCommentToken,
@@ -16,35 +18,96 @@ export default class Parser {
         TokenType.EndOfLineToken,
     ];
 
+    private currentParsing: TokenType[] = [];
+    private tokensStacks: {
+        [depth: number]: Token[]
+    } = [];
+    private syntaxesStack: Syntax[] = [];
+
     public constructor(tokens: Token[]) {
-        this.tokensHelper = new TokenHelper(tokens, [
-            TokenType.NamespaceKeywordToken, TokenType.ImportKeywordToken,
+        this.tokensHelper = new TokenWalker(tokens, [
             TokenType.OpenBraceToken, TokenType.CloseBraceToken,
             TokenType.OpenBracketToken, TokenType.CloseBracketToken,
             TokenType.OpenParenToken, TokenType.CloseParenToken,
             TokenType.ColonToken, TokenType.SemicolonToken,
-            TokenType.LessThanToken, TokenType.GreaterThanToken,
         ]);
     }
 
     public parse(): Syntax[] {
-        const syntaxes: Syntax[] = [];
-        let syntax = this.nextSyntax();
-        while (syntax !== null) {
-            syntaxes.push(syntax);
-            syntax = this.nextSyntax();
+        do {
+            const current = this.tokensHelper.current;
+            if (current === undefined) {
+                // EOF, break loop
+                break;
+            }
+
+            switch (current.type) {
+
+            }
+
+            this.tokensStack.push(current);
+
+            if (current.type === TokenType.EndOfLineToken && this.crossLineMode === CrossLineMode.None) {
+                // Only trigger parse on EOL && CrossLineMode === None
+                this.compose();
+            }
         }
-        return syntaxes;
+        while (this.tokensHelper.advance());
+
+        if (this.tokensStack.length !== 0) {
+            this.finalizedSyntaxes.push(new UnknownSyntax(this.tokensStack));
+        }
+
+        return this.finalizedSyntaxes;
     }
 
-    private nextSyntax(): Syntax | null {
-        let syntax: Syntax | null = null;
-        if (!this.tokensHelper.advanceToNextSegmentStart()) {
-            return syntax;
-        } else {
-            syntax = new UnknownSyntax(this.tokensHelper.segment);
+    private compose() {
+        const syntax = this.tryGetSyntax(this.tokensStack);
+        if (syntax !== null) {
+            this.stageSyntax(syntax);
+            const composedSyntax = this.tryComposeSyntaxes(this.syntaxesStack);
+            if (composedSyntax !== null) {
+                this.stageSyntax(composedSyntax);
+            }
         }
-        this.tokensHelper.commit();
-        return syntax;
+    }
+
+    private getNonTriviaTokens(tokens: Token[]) {
+        return tokens.filter(token => !this.isTriviaToken(token));
+    }
+
+    private isTriviaToken(token: Token) {
+        return this.triviaTokenTypes.includes(token.type);
+    }
+
+    private stageSyntax(syntax: Syntax) {
+        // If is top-level syntax, then push to finalized array
+        if (SyntaxHelper.isTopLevelSyntax(syntax)) {
+            this.finalizedSyntaxes.push(syntax);
+        } else {
+            // Otherwise push to un-finalized array
+            this.syntaxesStack.push(syntax);
+        }
+        // Clear the tokens stack
+        this.tokensStack = [];
+    }
+
+    private tryGetSyntax(tokens: Token[]): Syntax | null {
+        const nonTriviaTokens = this.getNonTriviaTokens(tokens);
+        if (nonTriviaTokens.length === 0) {
+            return null;
+        }
+
+        if (SyntaxHelper.isImportSyntax(nonTriviaTokens)) {
+            return new ImportSyntax(nonTriviaTokens);
+        } else if (SyntaxHelper.isNamespaceSyntax(nonTriviaTokens)) {
+            return new NamespaceSyntax(nonTriviaTokens);
+        } else {
+            return null;
+        }
+    }
+
+    private tryComposeSyntaxes(syntaxes: Syntax[]): Syntax | null {
+        return null;
     }
 }

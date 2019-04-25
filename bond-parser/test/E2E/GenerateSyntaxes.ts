@@ -4,13 +4,30 @@ import { readdirSync, readFileSync, writeFileSync } from "fs";
 import Props from "../Props";
 
 import { Lexer, Parser } from "../../src";
-import { SyntaxType } from "../../src/Syntax";
+import { SyntaxType, Syntax } from "../../src/Syntax";
 
 const samples = readdirSync(Props.sampleRoot);
 
 // Options
 const filter = /.*/;
-const outputTriviaToken = false;
+const indent = "    ";
+
+function getSyntaxString(document: string, syntax: Syntax, depth: number = 0) {
+    let line = indent.repeat(depth);
+    line += SyntaxType[syntax.type];
+    line += "\t" + syntax.toString();
+    line += "\t" + syntax
+        .toRaw(document)
+        .replace(/\n/g, "\\n")
+        .replace(/\r/g, "\\r")
+        .replace(/\t/g, "\\t");
+    if (syntax.syntaxes !== undefined) {
+        for (const childSyntax of syntax.syntaxes) {
+            line += "\n" + getSyntaxString(document, childSyntax, depth + 1);
+        }
+    }
+    return line;
+}
 
 for (const sample of samples) {
     if (!filter.test(sample)) {
@@ -22,16 +39,7 @@ for (const sample of samples) {
     const parser = new Parser(tokens);
     const syntaxes = parser.parse();
     const syntaxesText = syntaxes
-        .map(syntax => {
-            let line = SyntaxType[syntax.type];
-            line = line + "\t" + syntax.toString();
-            line = line + "\t" + syntax
-                .toRaw(document)
-                .replace(/\n/g, "\\n")
-                .replace(/\r/g, "\\r")
-                .replace(/\t/g, "\\t");
-            return line;
-        })
+        .map(syntax => getSyntaxString(document, syntax))
         .filter(text => typeof text === "string") as string[];
     writeFileSync(
         resolve(Props.syntaxesRoot, `${sample}.tsv`),

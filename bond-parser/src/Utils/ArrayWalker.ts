@@ -1,4 +1,4 @@
-export default abstract class ArrayHelper<TElement, TSegment, TSegmentStop> {
+export default abstract class ArrayWalker<TElement, TSegment, TSegmentStop> {
     public get current(): TElement | undefined {
         return this.get(this.currentIndex);
     }
@@ -72,7 +72,7 @@ export default abstract class ArrayHelper<TElement, TSegment, TSegmentStop> {
             // then advance to next index
             return this.advance();
         } else {
-            const index = this.nextIndexOf(char => this.isSegmentStop(char));
+            const index = this.nextIndexOf(el => this.isSegmentStop(el));
             return this.advanceTo(index);
         }
     }
