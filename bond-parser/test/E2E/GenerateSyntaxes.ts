@@ -5,6 +5,7 @@ import Props from "../Props";
 
 import { Lexer, Parser } from "../../src";
 import { SyntaxType, Syntax } from "../../src/Syntax";
+import ComplexSyntax from "../../src/Syntax/ComplexSyntax";
 
 const samples = readdirSync(Props.sampleRoot);
 
@@ -21,8 +22,8 @@ function getSyntaxString(document: string, syntax: Syntax, depth: number = 0) {
         .replace(/\n/g, "\\n")
         .replace(/\r/g, "\\r")
         .replace(/\t/g, "\\t");
-    if (syntax.syntaxes !== undefined) {
-        for (const childSyntax of syntax.syntaxes) {
+    if (syntax.isComplexSyntax) {
+        for (const childSyntax of (syntax as ComplexSyntax).syntaxes) {
             line += "\n" + getSyntaxString(document, childSyntax, depth + 1);
         }
     }
@@ -37,13 +38,11 @@ for (const sample of samples) {
     const lexer = new Lexer(document);
     const tokens = lexer.process();
     const parser = new Parser(tokens);
-    const syntaxes = parser.parse();
-    const syntaxesText = syntaxes
-        .map(syntax => getSyntaxString(document, syntax))
-        .filter(text => typeof text === "string") as string[];
+    const script = parser.parse();
+    const scriptText = getSyntaxString(document, script);
     writeFileSync(
         resolve(Props.syntaxesRoot, `${sample}.tsv`),
-        ["TokenType\tSpan\tRaw"]
-            .concat(syntaxesText)
+        ["SyntaxType\tSpan\tRaw"]
+            .concat(scriptText)
             .join("\n"));
 }

@@ -2,10 +2,12 @@ import Syntax, { SyntaxType } from "./Syntax";
 import { Token } from "../Lexical";
 
 export default class UnknownSyntax extends Syntax {
-    public unknownTokens: Token[];
+    public tokens: Token[];
+    public syntaxes: Syntax[];
 
-    public constructor(tokens: Token[]) {
+    public constructor(tokens: Token[], syntaxes: Syntax[] = []) {
         super(SyntaxType.UnknownSyntax, tokens);
-        this.unknownTokens = tokens;
+        this.tokens = tokens;
+        this.syntaxes = syntaxes;
     }
 }

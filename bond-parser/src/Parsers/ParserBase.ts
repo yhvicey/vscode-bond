@@ -1,46 +1,90 @@
+import { Syntax, UnknownSyntax } from "../Syntax";
 import { Token, TokenType } from "../Lexical";
-import TokenWalker from "../Utils/TokenWalker";
-import { Syntax } from "../Syntax";
-import { ComplexSyntaxHelper } from "../Utils";
-import ComplexSyntax from "../Syntax/ComplexSyntax";
 
-export default abstract class ParserBase {
-    private readonly walker: TokenWalker;
-    private readonly stopTokenTypes: TokenType[];
-
-    public constructor(tokens: Token[]) {
-        this.stopTokenTypes = this.getStopTokenTypes();
-        this.walker = new TokenWalker(tokens, this.stopTokenTypes);
+export default abstract class ParserBase<S extends Syntax> {
+    public get childSyntaxes(): Syntax[] {
+        return this.syntaxes.slice();
     }
 
-    public parse(): Syntax[] {
-        const syntaxes: Syntax[] = [];
-        while (true) {
-            const syntax = this.next();
-            if (syntax === null) {
-                return syntaxes;
+    protected get isTakingFinished() {
+        return !this.canTake;
+    }
+
+    private canTake: boolean = true;
+    private childParser: ParserBase<Syntax> | null = null;
+    private composed: boolean = false;
+    private result: S | UnknownSyntax | null = null;
+    private syntaxes: Syntax[] = [];
+    private tokens: Token[] = [];
+
+    public compose() {
+        if (this.composed) {
+            if (this.result === null) {
+                throw Error("Parser already composed and result not cached.");
             } else {
-                syntaxes.push(syntax);
+                return this.result;
             }
         }
+        if (this.childParser !== null) {
+            // Force compose child parser
+            this.addChildSyntax(this.composeChildParser());
+        }
+        if (this.canTake) {
+            // Unfinished, return UnknownSyntax
+            this.result = new UnknownSyntax(this.tokens, this.syntaxes);
+        } else {
+            this.result = this.onCompose(this.tokens, this.syntaxes);
+        }
+        return this.result;
     }
 
-    protected abstract getStopTokenTypes(): TokenType[];
-
-    protected abstract handleSegment(tokens: Token[]): Syntax;
-
-    private next(): Syntax | null {
-        if (!this.walker.advanceToNextSegmentStart()) {
-            return null;
-        } else {
-            const syntax = this.handleSegment(this.walker.segment);
-            if (syntax.isComplexSyntax) {
-                // Create corresponding parser for complex syntax
-                const parser = ComplexSyntaxHelper.createParser(syntax);
-                (syntax as ComplexSyntax).syntaxes = parser.parse();
-            }
-            this.walker.commit();
-            return syntax;
+    public addChildSyntax(syntax: Syntax) {
+        for (const token of syntax.tokens) {
+            this.tokens.push(token);
         }
+        this.syntaxes.push(syntax);
+    }
+
+    public take(token: Token): boolean {
+        this.onTake(token.type);
+        this.tokens.push(token);
+        if (this.childParser !== null) {
+            // Delegate to child parser
+            const canTake = this.childParser.take(token);
+            if (!canTake) {
+                this.addChildSyntax(this.composeChildParser());
+            }
+        }
+        return this.canTake;
+    }
+
+    protected finishTaking() {
+        this.canTake = false;
+    }
+
+    protected useChildParser(parser: ParserBase<Syntax>) {
+        if (this.childParser !== null) {
+            // Force compose child parser
+            this.composeChildParser();
+        }
+        this.childParser = parser;
+    }
+
+    protected abstract onCompose(tokens: Token[], syntaxes: Syntax[]): S;
+
+    protected onChildParserCompose(childParser: ParserBase<Syntax>) {
+        // No-op;
+    }
+
+    protected abstract onTake(tokenType: TokenType): void;
+
+    private composeChildParser() {
+        if (this.childParser === null) {
+            throw new Error("No child parser for composing.");
+        }
+        const childParser = this.childParser;
+        this.childParser = null;
+        this.onChildParserCompose(childParser);
+        return childParser.compose();
     }
 }

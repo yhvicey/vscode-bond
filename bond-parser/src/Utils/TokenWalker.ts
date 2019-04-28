@@ -2,14 +2,12 @@ import ArrayWalker from "./ArrayWalker";
 import { Token, TokenType } from "../Lexical";
 
 export default class TokenWalker extends ArrayWalker<Token, Token[], TokenType> {
-    protected get length() {
+    public get length() {
         return this.tokens.length;
     }
 
     protected get defaultSegmentStopGroups() {
-        return [[
-            TokenType.EndOfLineToken,
-        ]];
+        return [[]];
     }
 
     private readonly tokens: Token[];

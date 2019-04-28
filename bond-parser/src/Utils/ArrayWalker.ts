@@ -27,7 +27,7 @@ export default abstract class ArrayWalker<TElement, TSegment, TSegmentStop> {
         return this.slice(this.currentCommittedIndex, this.currentIndex);
     }
 
-    protected abstract get length(): number;
+    public abstract get length(): number;
 
     protected abstract defaultSegmentStopGroups: TSegmentStop[][];
 

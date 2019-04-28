@@ -35,10 +35,11 @@ export enum TokenType {
     QuestionToken,
     SemicolonToken,
     // Trivia
-    WhitespaceToken,
+    EndOfFileToken,
     EndOfLineToken,
-    SingleLineCommentToken,
     MultiLineCommentToken,
+    SingleLineCommentToken,
+    WhitespaceToken,
 }
 
 export default abstract class Token extends TextSpan {

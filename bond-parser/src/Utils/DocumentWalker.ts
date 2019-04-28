@@ -1,7 +1,7 @@
 import ArrayWalker from "./ArrayWalker";
 
 export default class DocumentWalker extends ArrayWalker<string, string, string> {
-    protected get length() {
+    public get length() {
         return this.document.length;
     }
 

@@ -1,4 +1,5 @@
 import Syntax, { SyntaxType } from "./Syntax";
+import { Token } from "../Lexical";
 
 export default abstract class ComplexSyntax extends Syntax {
     public get isComplexSyntax() {
@@ -7,8 +8,8 @@ export default abstract class ComplexSyntax extends Syntax {
 
     public syntaxes: Syntax[];
 
-    public constructor(syntaxType: SyntaxType, syntaxes: Syntax[]) {
-        super(syntaxType, syntaxes.flatMap(syntax => syntax.tokens));
+    public constructor(syntaxType: SyntaxType, tokens: Token[], syntaxes: Syntax[]) {
+        super(syntaxType, tokens);
         this.syntaxes = syntaxes;
     }
 }

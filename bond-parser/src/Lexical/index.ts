@@ -7,6 +7,7 @@ import CloseParenToken from "./CloseParenToken";
 import ColonToken from "./ColonToken";
 import CommaToken from "./CommaToken";
 import DotToken from "./DotToken";
+import EndOfFileToken from "./EndOfFileToken";
 import EndOfLineToken from "./EndOfLineToken";
 import EnumKeywordToken from "./EnumKeywordToken";
 import EqualsToken from "./EqualsToken";
@@ -45,6 +46,7 @@ export {
     ColonToken,
     CommaToken,
     DotToken,
+    EndOfFileToken,
     EndOfLineToken,
     EnumKeywordToken,
     EqualsToken,

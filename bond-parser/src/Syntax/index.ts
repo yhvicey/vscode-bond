@@ -1,7 +1,8 @@
 import Syntax, { SyntaxType } from "./Syntax";
-import UnknownSyntax from "./UnknownToken";
-import NamespaceSyntax from "./NamespaceSyntax";
 import ImportSyntax from "./ImportSyntax";
+import NamespaceSyntax from "./NamespaceSyntax";
+import ScriptSyntax from "./ScriptSyntax";
+import UnknownSyntax from "./UnknownToken";
 
 export {
     Syntax,
@@ -9,5 +10,6 @@ export {
     // Syntaxes
     ImportSyntax,
     NamespaceSyntax,
+    ScriptSyntax,
     UnknownSyntax,
 };

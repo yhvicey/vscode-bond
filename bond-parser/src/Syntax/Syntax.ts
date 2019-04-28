@@ -3,11 +3,13 @@ import TextSpan from "../TextSpan";
 
 export enum SyntaxType {
     UnknownSyntax,
-    // Non-top level syntaxes
-
-    // Top level syntaxes
+    EnumSyntax,
+    EnumFieldSyntax,
     ImportSyntax,
     NamespaceSyntax,
+    ScriptSyntax,
+    StructSyntax,
+    StructFieldSyntax,
 }
 
 export default abstract class Syntax extends TextSpan {
