@@ -8,9 +8,10 @@ export default class StructFieldParser extends ParserBase<StructFieldSyntax> {
     }
 
     protected onTake(tokenType: TokenType) {
-        // Stop when meet ";" or "}"
+        // Stop when meet ";", "}" or EOL
         if (tokenType === TokenType.SemicolonToken
-            || tokenType === TokenType.CloseBraceToken) {
+            || tokenType === TokenType.CloseBraceToken
+            || tokenType === TokenType.EndOfLineToken) {
             this.finishTaking();
         }
     }

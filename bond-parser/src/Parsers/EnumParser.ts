@@ -5,6 +5,8 @@ import { TokenType, Token } from "../Lexical";
 import { Syntax, EnumSyntax, AttributeSyntax } from "../Syntax";
 
 export default class EnumParser extends ParserBase<EnumSyntax> {
+    private metFirstIdentifier: boolean = false;
+
     protected onCompose(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
         return new EnumSyntax(tokens, syntaxes, attributes);
     }
@@ -14,7 +16,12 @@ export default class EnumParser extends ParserBase<EnumSyntax> {
             case TokenType.OpenBracketToken:
                 this.useChildParser(new AttributeParser()); break;
             case TokenType.IdentifierToken:
-                this.useChildParser(new EnumFieldParser()); break;
+                if (this.metFirstIdentifier) {
+                    this.useChildParser(new EnumFieldParser());
+                } else {
+                    this.metFirstIdentifier = true;
+                }
+                break;
         }
         // Stop when meet "}"
         if (tokenType === TokenType.CloseBraceToken) {

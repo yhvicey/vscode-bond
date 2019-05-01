@@ -8,9 +8,11 @@ export default class EnumFieldParser extends ParserBase<EnumFieldSyntax> {
     }
 
     protected onTake(tokenType: TokenType) {
-        // Stop when meet "," or "}"
+        // Stop when meet ",", ";", "}" or EOL
         if (tokenType === TokenType.CommaToken
-            || tokenType === TokenType.CloseBraceToken) {
+            || tokenType === TokenType.SemicolonToken
+            || tokenType === TokenType.CloseBraceToken
+            || tokenType === TokenType.EndOfLineToken) {
             this.finishTaking();
         }
     }

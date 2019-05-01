@@ -144,7 +144,7 @@ export default class DocSegmentHelper {
     private static readonly endOfLineRegex = /^(\r|\n)+$/;
     private static readonly identifierRegex = /^\w+$/;
     private static readonly keywordRegex = /^(enum|import|namespace|optional|required|struct)$/;
-    private static readonly numberRegex = /^(?<!\.)(-)?(\d+)((\.(\d+))|(l|L))?(?!\.)$/;
+    private static readonly numberRegex = /^(?<!\.)(-)?(((\d+)((\.(\d+))|(l|L))?)|(0[xX][\da-fA-F]+))(?!\.)$/;
     private static readonly stringLiteralStartRegex = /(L)?("|')/;
     private static readonly valueRegex = /^(false|nothing|null|true)$/;
     private static readonly whitespaceRegex = /^( |\t|\u00a0)+$/;
