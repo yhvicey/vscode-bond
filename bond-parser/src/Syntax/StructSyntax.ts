@@ -1,9 +1,9 @@
 import Syntax, { SyntaxType } from "./Syntax";
-import ComplexSyntax from "./ComplexSyntax";
 import { Token } from "../Lexical";
+import { AttributableSyntax, AttributeSyntax } from ".";
 
-export default class StructSyntax extends ComplexSyntax {
-    public constructor(fields: Syntax[], tokens: Token[]) {
-        super(SyntaxType.StructSyntax, tokens, fields);
+export default class StructSyntax extends AttributableSyntax {
+    public constructor(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
+        super(SyntaxType.StructSyntax, tokens, syntaxes, attributes);
     }
 }

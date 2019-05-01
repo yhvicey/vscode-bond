@@ -1,9 +1,9 @@
 import Syntax, { SyntaxType } from "./Syntax";
-import ComplexSyntax from "./ComplexSyntax";
 import { Token } from "../Lexical";
+import { AttributableSyntax, AttributeSyntax } from ".";
 
-export default class EnumSyntax extends ComplexSyntax {
-    public constructor(fields: Syntax[], tokens: Token[]) {
-        super(SyntaxType.EnumSyntax, tokens, fields);
+export default class EnumSyntax extends AttributableSyntax {
+    public constructor(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
+        super(SyntaxType.EnumSyntax, tokens, syntaxes, attributes);
     }
 }

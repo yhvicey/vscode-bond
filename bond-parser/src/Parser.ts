@@ -19,7 +19,7 @@ export default class Parser {
         }
         let syntax = scriptParser.compose();
         if (syntax.type === SyntaxType.UnknownSyntax) {
-            syntax = new ScriptSyntax(syntax.syntaxes, syntax.tokens);
+            syntax = new ScriptSyntax(syntax.tokens, syntax.syntaxes);
         }
         return syntax;
     }

@@ -3,7 +3,7 @@ import { Token, TokenType } from "../Lexical";
 import { ImportSyntax, Syntax } from "../Syntax";
 
 export default class ImportParser extends ParserBase<ImportSyntax> {
-    protected onCompose(tokens: Token[], _: Syntax[]) {
+    protected onCompose(tokens: Token[]) {
         return new ImportSyntax(tokens);
     }
 

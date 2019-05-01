@@ -1,9 +1,9 @@
 import ParserBase from "./ParserBase";
 import { Token, TokenType } from "../Lexical";
-import { NamespaceSyntax, Syntax } from "../Syntax";
+import { NamespaceSyntax } from "../Syntax";
 
 export default class NamespaceParser extends ParserBase<NamespaceSyntax> {
-    protected onCompose(tokens: Token[], syntaxes: Syntax[]) {
+    protected onCompose(tokens: Token[]) {
         return new NamespaceSyntax(tokens);
     }
 

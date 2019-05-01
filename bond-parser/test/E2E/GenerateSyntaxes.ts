@@ -4,7 +4,7 @@ import { readdirSync, readFileSync, writeFileSync } from "fs";
 import Props from "../Props";
 
 import { Lexer, Parser } from "../../src";
-import { SyntaxType, Syntax } from "../../src/Syntax";
+import { SyntaxType, Syntax, AttributableSyntax } from "../../src/Syntax";
 import ComplexSyntax from "../../src/Syntax/ComplexSyntax";
 
 const samples = readdirSync(Props.sampleRoot);
@@ -23,6 +23,11 @@ function getSyntaxString(document: string, syntax: Syntax, depth: number = 0) {
         .replace(/\r/g, "\\r")
         .replace(/\t/g, "\\t");
     if (syntax.isComplexSyntax) {
+        if ((syntax as AttributableSyntax).attributes !== undefined) {
+            for (const attribute of (syntax as AttributableSyntax).attributes) {
+                line += "\n" + getSyntaxString(document, attribute, depth + 1);
+            }
+        }
         for (const childSyntax of (syntax as ComplexSyntax).syntaxes) {
             line += "\n" + getSyntaxString(document, childSyntax, depth + 1);
         }

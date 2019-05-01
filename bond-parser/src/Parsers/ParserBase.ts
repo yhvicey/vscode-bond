@@ -1,4 +1,4 @@
-import { Syntax, UnknownSyntax } from "../Syntax";
+import { Syntax, UnknownSyntax, AttributeSyntax, AttributableSyntax, SyntaxType } from "../Syntax";
 import { Token, TokenType } from "../Lexical";
 
 export default abstract class ParserBase<S extends Syntax> {
@@ -10,6 +10,7 @@ export default abstract class ParserBase<S extends Syntax> {
         return !this.canTake;
     }
 
+    private attributes: AttributeSyntax[] = [];
     private canTake: boolean = true;
     private childParser: ParserBase<Syntax> | null = null;
     private composed: boolean = false;
@@ -17,7 +18,18 @@ export default abstract class ParserBase<S extends Syntax> {
     private syntaxes: Syntax[] = [];
     private tokens: Token[] = [];
 
-    public compose() {
+    public addChildSyntax(syntax: Syntax) {
+        for (const token of syntax.tokens) {
+            this.tokens.push(token);
+        }
+        if (syntax.type === SyntaxType.AttributeSyntax) {
+            this.stageAttribute(syntax as AttributeSyntax);
+        } else {
+            this.syntaxes.push(syntax);
+        }
+    }
+
+    public compose(attributes?: AttributeSyntax[]) {
         if (this.composed) {
             if (this.result === null) {
                 throw Error("Parser already composed and result not cached.");
@@ -33,16 +45,12 @@ export default abstract class ParserBase<S extends Syntax> {
             // Unfinished, return UnknownSyntax
             this.result = new UnknownSyntax(this.tokens, this.syntaxes);
         } else {
-            this.result = this.onCompose(this.tokens, this.syntaxes);
+            this.result = this.onCompose(
+                this.tokens,
+                this.syntaxes,
+                attributes || []);
         }
         return this.result;
-    }
-
-    public addChildSyntax(syntax: Syntax) {
-        for (const token of syntax.tokens) {
-            this.tokens.push(token);
-        }
-        this.syntaxes.push(syntax);
     }
 
     public take(token: Token): boolean {
@@ -65,12 +73,15 @@ export default abstract class ParserBase<S extends Syntax> {
     protected useChildParser(parser: ParserBase<Syntax>) {
         if (this.childParser !== null) {
             // Force compose child parser
-            this.composeChildParser();
+            this.addChildSyntax(this.composeChildParser());
         }
         this.childParser = parser;
     }
 
-    protected abstract onCompose(tokens: Token[], syntaxes: Syntax[]): S;
+    protected abstract onCompose(
+        tokens: Token[],
+        syntaxes: Syntax[],
+        attributes: AttributeSyntax[]): S;
 
     protected onChildParserCompose(childParser: ParserBase<Syntax>) {
         // No-op;
@@ -85,6 +96,10 @@ export default abstract class ParserBase<S extends Syntax> {
         const childParser = this.childParser;
         this.childParser = null;
         this.onChildParserCompose(childParser);
-        return childParser.compose();
+        return childParser.compose(this.attributes);
+    }
+
+    private stageAttribute(attribute: AttributeSyntax) {
+        this.attributes.push(attribute);
     }
 }

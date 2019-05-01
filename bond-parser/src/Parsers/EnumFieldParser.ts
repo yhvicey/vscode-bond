@@ -1,11 +1,10 @@
 import ParserBase from "./ParserBase";
 import { TokenType, Token } from "../Lexical";
-import { Syntax } from "../Syntax";
-import EnumFieldSyntax from "../Syntax/EnumFieldSyntax";
+import { Syntax, EnumFieldSyntax, AttributeSyntax } from "../Syntax";
 
 export default class EnumFieldParser extends ParserBase<EnumFieldSyntax> {
-    protected onCompose(tokens: Token[], _: Syntax[]) {
-        return new EnumFieldSyntax(tokens);
+    protected onCompose(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
+        return new EnumFieldSyntax(tokens, syntaxes, attributes);
     }
 
     protected onTake(tokenType: TokenType) {

@@ -1,33 +1,20 @@
 import ParserBase from "./ParserBase";
-import { Token, TokenType } from "../Lexical";
-import { Syntax } from "../Syntax";
-import StructSyntax from "../Syntax/StructSyntax";
+import AttributeParser from "./AttributeParser";
 import StructFieldParser from "./StructFieldParser";
+import { Token, TokenType } from "../Lexical";
+import { Syntax, StructSyntax, AttributeSyntax } from "../Syntax";
 
 export default class StructParser extends ParserBase<StructSyntax> {
-    private parsingFieldWithAttribute: boolean = false;
-
-    protected onChildParserCompose() {
-        this.parsingFieldWithAttribute = false;
-    }
-
-    protected onCompose(tokens: Token[], syntaxes: Syntax[]) {
-        return new StructSyntax(syntaxes, tokens);
+    protected onCompose(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
+        return new StructSyntax(tokens, syntaxes, attributes);
     }
 
     protected onTake(tokenType: TokenType) {
         switch (tokenType) {
-            case TokenType.OpenBracketToken: {
-                this.parsingFieldWithAttribute = true;
-                this.useChildParser(new StructFieldParser());
-                break;
-            }
-            case TokenType.NumberToken: {
-                if (!this.parsingFieldWithAttribute) {
-                    this.useChildParser(new StructFieldParser());
-                }
-                break;
-            }
+            case TokenType.NumberToken:
+                this.useChildParser(new StructFieldParser()); break;
+            case TokenType.OpenBracketToken:
+                this.useChildParser(new AttributeParser()); break;
         }
         // Stop when meet "}"
         if (tokenType === TokenType.CloseBraceToken) {

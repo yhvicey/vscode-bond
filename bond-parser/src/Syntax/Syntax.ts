@@ -3,6 +3,7 @@ import TextSpan from "../TextSpan";
 
 export enum SyntaxType {
     UnknownSyntax,
+    AttributeSyntax,
     EnumSyntax,
     EnumFieldSyntax,
     ImportSyntax,
