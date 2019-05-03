@@ -5,6 +5,7 @@ export default class StringToken extends Token {
 
     public constructor(start: number, stringLiteral: string) {
         super(start, stringLiteral.length, TokenType.StringToken);
-        this.stringLiteral = stringLiteral;
+        // Trim double quote
+        this.stringLiteral = stringLiteral.substr(1, stringLiteral.length - 2);
     }
 }

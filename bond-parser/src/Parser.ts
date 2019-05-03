@@ -11,8 +11,10 @@ export default class Parser {
 
     public parse(): ScriptSyntax {
         const scriptParser = new ScriptParser();
-        for (const token of this.tokens) {
-            if (!scriptParser.take(token)) {
+        for (let i = 0; i < this.tokens.length; i++) {
+            const token = this.tokens[i];
+            const next = this.tokens[i + 1];
+            if (!scriptParser.take(token, next)) {
                 // EOF
                 break;
             }

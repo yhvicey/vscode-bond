@@ -53,12 +53,12 @@ export default abstract class ParserBase<S extends Syntax> {
         return this.result;
     }
 
-    public take(token: Token): boolean {
-        this.onTake(token.type);
+    public take(token: Token, next?: Token): boolean {
+        this.onTake(token.type, next === undefined ? undefined : next.type);
         this.tokens.push(token);
         if (this.childParser !== null) {
             // Delegate to child parser
-            const canTake = this.childParser.take(token);
+            const canTake = this.childParser.take(token, next);
             if (!canTake) {
                 this.addChildSyntax(this.composeChildParser());
             }
@@ -87,7 +87,7 @@ export default abstract class ParserBase<S extends Syntax> {
         // No-op;
     }
 
-    protected abstract onTake(tokenType: TokenType): void;
+    protected abstract onTake(tokenType: TokenType, nextTokenType?: TokenType): void;
 
     private composeChildParser() {
         if (this.childParser === null) {

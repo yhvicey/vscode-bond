@@ -29,7 +29,7 @@ for (const sample of samples) {
                 return;
             }
             let line = TokenType[token.type];
-            line = line + "\t" + token.toString();
+            line = line + "\t" + token.toSpanString();
             line = line + "\t" + token
                 .toRaw(document)
                 .replace(/\n/g, "\\n")

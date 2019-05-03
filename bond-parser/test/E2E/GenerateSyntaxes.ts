@@ -4,7 +4,14 @@ import { readdirSync, readFileSync, writeFileSync } from "fs";
 import Props from "../Props";
 
 import { Lexer, Parser } from "../../src";
-import { SyntaxType, Syntax, AttributableSyntax, AttributeSyntax, EnumSyntax } from "../../src/Syntax";
+import {
+    Syntax,
+    SyntaxType,
+    AttributableSyntax,
+    EnumSyntax,
+    ImportSyntax,
+    NamespaceSyntax,
+} from "../../src/Syntax";
 import ComplexSyntax from "../../src/Syntax/ComplexSyntax";
 
 const samples = readdirSync(Props.sampleRoot);
@@ -13,28 +20,50 @@ const samples = readdirSync(Props.sampleRoot);
 const filter = /.*/;
 const indent = "    ";
 
-function getSyntaxPropsString(syntax: Syntax, depth: number = 0) {
-    let line = indent.repeat(depth);
+function getSyntaxPropsString(syntax: Syntax) {
     switch (syntax.type) {
         case SyntaxType.EnumSyntax: {
             const fields = (syntax as EnumSyntax).fields;
             if (fields !== undefined) {
-                line += `[${fields.join(", ")}]`;
+                const fieldText = fields.map(field => {
+                    if (field.name === undefined) {
+                        return "";
+                    }
+                    if (field.value === undefined) {
+                        return field.name;
+                    }
+                    return `${field.name} = ${field.value}`;
+                }).join(", ");
+                return `[${fieldText}]`;
+            }
+            break;
+        }
+        case SyntaxType.ImportSyntax: {
+            const path = (syntax as ImportSyntax).path;
+            if (path !== undefined) {
+                return path;
+            }
+            break;
+        }
+        case SyntaxType.NamespaceSyntax: {
+            const name = (syntax as NamespaceSyntax).name;
+            if (name !== undefined) {
+                return name;
             }
             break;
         }
         default: {
-            return "";
+            return "-";
         }
     }
-    return line;
+    return "";
 }
 
 function getSyntaxString(document: string, syntax: Syntax, depth: number = 0) {
     let line = indent.repeat(depth);
     line += SyntaxType[syntax.type];
-    line += "\t" + syntax.toString();
-    line += "\t" + getSyntaxPropsString(syntax, depth + 1);
+    line += "\t" + syntax.toSpanString();
+    line += "\t" + getSyntaxPropsString(syntax);
     line += "\t" + syntax
         .toRaw(document)
         .replace(/\n/g, "\\n")

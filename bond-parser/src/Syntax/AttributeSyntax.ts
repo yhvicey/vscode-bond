@@ -15,13 +15,15 @@ export default class AttributeSyntax extends Syntax {
             tokens,
             token => token.type === TokenType.IdentifierToken
         );
-        const firstOpenParenIndex = TokenHelper.indexOf(
+        const lastIndex = TokenHelper.indexOf(
             tokens,
-            token => token.type === TokenType.OpenParenToken
+            token => token.type !== TokenType.IdentifierToken
+                && token.type !== TokenType.DotToken,
+            firstIdentifierIndex
         );
-        if (firstIdentifierIndex !== -1 && firstOpenParenIndex !== -1) {
+        if (firstIdentifierIndex !== -1 && lastIndex !== -1) {
             this.className = TokenHelper.composeIdentifiers(
-                tokens.slice(firstIdentifierIndex, firstOpenParenIndex));
+                tokens.slice(firstIdentifierIndex, lastIndex));
         }
     }
 }

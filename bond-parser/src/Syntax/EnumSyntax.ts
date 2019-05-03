@@ -3,7 +3,7 @@ import { Token } from "../Lexical";
 import { AttributableSyntax, AttributeSyntax, EnumFieldSyntax } from ".";
 
 export default class EnumSyntax extends AttributableSyntax {
-    public fields?: string[];
+    public fields?: EnumFieldSyntax[];
 
     public constructor(tokens: Token[], syntaxes: Syntax[], attributes: AttributeSyntax[]) {
         super(SyntaxType.EnumSyntax, tokens, syntaxes, attributes);
@@ -15,10 +15,7 @@ export default class EnumSyntax extends AttributableSyntax {
         }
         for (const syntax of syntaxes) {
             if (syntax.type === SyntaxType.EnumFieldSyntax) {
-                const name = (syntax as EnumFieldSyntax).name;
-                if (name !== undefined) {
-                    this.fields.push(name);
-                }
+                this.fields.push(syntax as EnumFieldSyntax);
             }
         }
     }

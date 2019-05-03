@@ -14,7 +14,7 @@ export default class TextSpan {
         return position >= this.start && position < this.end;
     }
 
-    public toString() {
+    public toSpanString() {
         return `[${this.start}, ${this.end})`;
     }
 
