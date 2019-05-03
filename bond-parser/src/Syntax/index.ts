@@ -9,7 +9,7 @@ import NamespaceSyntax from "./NamespaceSyntax";
 import ScriptSyntax from "./ScriptSyntax";
 import StructSyntax from "./StructSyntax";
 import StructFieldSyntax from "./StructFieldSyntax";
-import UnknownSyntax from "./UnknownToken";
+import UnknownSyntax from "./UnknownSyntax";
 
 export {
     Syntax,

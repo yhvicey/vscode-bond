@@ -11,5 +11,10 @@ export default abstract class ComplexSyntax extends Syntax {
     public constructor(syntaxType: SyntaxType, tokens: Token[], syntaxes: Syntax[]) {
         super(syntaxType, tokens);
         this.syntaxes = syntaxes;
+        this.processSyntaxes(this.syntaxes);
+    }
+
+    protected processSyntaxes(syntaxes: Syntax[]) {
+        // No-op
     }
 }

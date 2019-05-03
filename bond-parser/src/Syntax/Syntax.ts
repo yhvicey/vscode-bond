@@ -32,5 +32,10 @@ export default abstract class Syntax extends TextSpan {
         super(spanStart, spanLength);
         this.type = type;
         this.tokens = tokens;
+        this.processTokens(this.tokens);
+    }
+
+    protected processTokens(tokens: Token[]) {
+        // No-op
     }
 }

@@ -2,7 +2,7 @@ import DocSegmentHelper from "./DocSegmentHelper";
 import DocumentWalker from "./DocumentWalker";
 import ArrayWalker from "./ArrayWalker";
 import SyntaxHelper from "./SyntaxHelper";
-import ComplexSyntaxHelper from "./ComplexSyntaxHelper";
+import TokenHelper from "./TokenHelper";
 
 export {
     // Walkers
@@ -11,5 +11,5 @@ export {
     // Helpers
     DocSegmentHelper,
     SyntaxHelper,
-    ComplexSyntaxHelper,
+    TokenHelper,
 };

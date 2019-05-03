@@ -3,7 +3,7 @@ import AttributeSyntax from "./AttributeSyntax";
 import ComplexSyntax from "./ComplexSyntax";
 import { Token } from "../Lexical";
 
-export default class AttributableSyntax extends ComplexSyntax {
+export default abstract class AttributableSyntax extends ComplexSyntax {
     public attributes: AttributeSyntax[] = [];
 
     public constructor(
